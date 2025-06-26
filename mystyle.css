@@ -5,10 +5,10 @@
     box-sizing: border-box;
 }
 body{
-    background-color: rgb(33, 33, 37);
+    background-color: rgb(150, 150, 153);
 }
 .app{
-    background-color: rgb(196, 241, 91);
+    background-color: rgb(249, 250, 247);
     width: 90%;
     max-width: 600px;
     margin: 100px auto 0;
@@ -32,7 +32,7 @@ body{
     font-weight: 600px;
 }
 .btn{
-    background: rgb(36, 206, 64);
+    background: rgb(225, 226, 225);
     font-weight: bolder;
     width: 100%;
     border-bottom: 1px solid #222;
@@ -44,7 +44,7 @@ body{
     font-size: larger;
 }
 .btn:hover:not([disabled]){
-    background: black;
+    background: rgb(39, 38, 38);
     color: white;
 }
 .btn:disabled{
@@ -54,7 +54,7 @@ body{
     font-size: 25px;
 }
 #next-btn{
-    background: lightcoral;
+    background: rgb(70, 69, 69);
     color: white;
     font-weight: 500;
     width: 200px;
@@ -66,9 +66,9 @@ body{
     display: block;
 }
 .correct{
-    background: #d6f815;
+    background:none;
 
 }
 .incorrect{
-    background: #ee28dd;
+    background: none;
 }
