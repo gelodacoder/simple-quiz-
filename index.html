@@ -1,41 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Quiz #1</title>
-	<link rel="stylesheet" href="mystyle.css">
-		
-	</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quiz #1</title>
+    <link rel="stylesheet" href="mystyle.css"></style>
 </head>
 <body>
-		<div class = "app">
-			<h1> Quiz </h1>
-			<div class = "quiz">
-				<h2 id = "question"> 1+1? </h2>
-				<div id = "answer-buttons">
-					<button class="btn">1</button>
-					<button class="btn">2</button>
-					<button class="btn">3</button>
-					<button class="btn">4</button>
-				</div>
-			<button id = "next-btn"> Next </button>
-		</div> 
-	</div>
-		
-			<script>
-				const questions = [
-					{ 
-						question: "Kung ang light ay ilaw ano naman amg lightning?",
-						answers: [ 
-							{text: "Ulan", correct:false},
-							{text: "Kulog", correct:false},
-							{text: "Kidlat", correct:false},
-							{text: "Umiilaw", correct:true}
+    <div class="app">
+        <h1>Quiz</h1>
+        <div class="quiz">
+            <h2 id="question">Question goes here</h2>
+            <div id="answer-buttons"></div>
+            <button id="next-btn">Next</button>
+        </div>
+    </div>
 
-							]
-					},
-					    { 
+	<footer>
+        <strong>
+            GularizaTech_IT &copy; <a href="https://www.facebook.com/profile.php?id=615568287222394" target="_blank">gelodacoder</a>.
+        </strong>
+        All rights reserved 2024.
+    </footer>
+
+    <script>
+        const questions = [
+            { 
+                question: "Kung ang light ay ilaw ano naman ang lightning?",
+                answers: [ 
+                    {text: "Ulan", correct: false},
+                    {text: "Kulog", correct: false},
+                    {text: "Kidlat", correct: false},
+                    {text: "Umiilaw", correct: true}
+                ]
+            },
+           
+            { 
 						question: " Ilan ang bituin sa American flag?",
 						answers: [ 
 							{text: "pito", correct:false},
@@ -129,108 +129,91 @@
 					}
 					];
 
+        const questionElement = document.getElementById("question");
+        const answerButtons = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-btn");
 
+        let currentQuestionIndex = 0;
+        let score = 0;
 
-				const questionElement = document.getElementById("question");
-				const answerButtons = document.getElementById("answer-buttons");
-				const nextButton = document.getElementById("next-btn");
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerHTML = "Next";
+            showQuestions();
+        }
 
-				let currentQuestionIndex = 0;
-				let score = 0;
+        function showQuestions() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            let questionNo = currentQuestionIndex + 1;
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
 
-				function startQuiz(){
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("btn");
+                answerButtons.appendChild(button);
 
-				currentQuestionIndex = 0;
-				score = 0;
-				nextButton.innerHTML = "Next";
-				showQuestions();
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener("click", selectAnswer);
+            });
+        }
 
-			}
+        function resetState() {
+            nextButton.style.display = "none";
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+        }
 
-			function showQuestions(){
-				resetState();
-				let currentQuestion = questions[currentQuestionIndex];
-				let questionNo = currentQuestionIndex + 1;
-				questionElement.innerHTML = questionNo + "." + currentQuestion.question;
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === "true";
+            
+            // Only mark the clicked button
+            if (isCorrect) {
+                selectedBtn.classList.add("correct");
+                score++;
+            } else {
+                selectedBtn.classList.add("incorrect");
+            }
 
-				currentQuestion.answers.forEach(answer =>{
-				const button = document.createElement("button");
-				button.innerHTML= answer.text;
-				button.classList.add("btn");
+            // Disable all buttons after selection
+            Array.from(answerButtons.children).forEach(button => {
+                button.disabled = true;
+            });
 
-				answerButtons.appendChild(button);
-				if(answer.correct){
-					button.dataset.correct = answer.correct;
-				}
-				button.addEventListener("click",selectAnswer);
-			});
-			}
+            nextButton.style.display = "block";
+        }
 
-			function resetState(){
-				nextButton.style.display = "none";
-				while(answerButtons.firstChild){
-					answerButtons.removeChild(answerButtons.firstChild);
-				}
-				}
+        function showScore() {
+            resetState();
+            questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+            nextButton.innerHTML = "Play Again";
+            nextButton.style.display = "block";
+        }
 
-			function selectAnswer(e){
-					const selectedBtn = e.target;
-					const isCorrect = selectedBtn.dataset.correct == "true";
-					if(isCorrect){
-						selectedBtn.classList.add ("correct");
-						score ++;
-					}else{
-						selectedBtn.classList.add("incorrect");
-					}
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestions();
+            } else {
+                showScore();
+            }
+        }
 
-					Array.from(answerButtons.children).forEach(button =>{
-						if(button.dataset.correct==="true"){
-							button.classList.add("correct");
-						}
-						button.disabled = true;
-						});
-					nextButton.style.display = "block";
-				}
-			function showScore(){
-				resetState();
-				questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
-				nextButton.innerHTML = "Play Again";
-				nextButton.style.display = "block";
-			}
-				function handleNextButton(){
-					currentQuestionIndex++;
-					if(currentQuestionIndex < questions.length){
-						showQuestions();
-					}else{
-						showScore();
-					}
-				}
-			nextButton.addEventListener("click",()=>{
-				if (currentQuestionIndex<questions.length){
-					handleNextButton();
-				}else{
-					startQuiz();
-				}
-			});
-			startQuiz();
-		
+        nextButton.addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length) {
+                handleNextButton();
+            } else {
+                startQuiz();
+            }
+        });
 
-
-			  </script> </br></br></br></br></br></br>
-						          </br>
-								     
-									
-								
-							
-
-					<strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GularizaTech_IT &copy; <a href="https://www.facebook.com/profile.php?id=615568287222394"target="_blank">gelodacoder</a>.</strong>
-					All rights reserved 2024. 
-
-
-			</body>
-		
-
-
-
-			
+        startQuiz();
+    </script>
+</body>
 </html>
