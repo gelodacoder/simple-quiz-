@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Quiz #1</title>
+	<link rel="stylesheet" href="mystyle.css">
+		
+	</style>
+</head>
+<body>
+		<div class = "app">
+			<h1> Quiz </h1>
+			<div class = "quiz">
+				<h2 id = "question"> 1+1? </h2>
+				<div id = "answer-buttons">
+					<button class="btn">1</button>
+					<button class="btn">2</button>
+					<button class="btn">3</button>
+					<button class="btn">4</button>
+				</div>
+			<button id = "next-btn"> Next </button>
+		</div> 
+	</div>
+		
+			<script>
+				const questions = [
+					{ 
+						question: "Kung ang light ay ilaw ano naman amg lightning?",
+						answers: [ 
+							{text: "Ulan", correct:false},
+							{text: "Kulog", correct:false},
+							{text: "Kidlat", correct:false},
+							{text: "Umiilaw", correct:true}
+
+							]
+					},
+					    { 
+						question: " Ilan ang bituin sa American flag?",
+						answers: [ 
+							{text: "pito", correct:false},
+							{text: "anim", correct:false},
+							{text: "madami", correct:true},
+							{text: "tatlo", correct:false}
+
+							]
+					},
+						{ 
+						question: "Ang iba't ibang sabon pag pinag halo bubula ba?",
+						answers: [ 
+							{text: "Oo lalo na yung Surf", correct:false},
+							{text: "Hindi ko pa na try", correct:false},
+							{text: "Hindi,kasi walang tubig", correct:true},
+							{text: "Pagawa ko kay mama", correct:false}
+
+							]
+					},
+						{ 
+						question: "Ang mga Hindu ay galing sa aling bansa?",
+						answers: [ 
+							{text: "Saudi", correct:false},
+							{text: "Japan", correct:false},
+							{text: "Hindunesia", correct:true},
+							{text: "Korea", correct:false}
+
+							]
+					},
+						{ 
+						question: "Anung hayop si King Kong?",
+						answers: [ 
+							{text: "Bakunawa", correct:false},
+							{text: "Pagong", correct:true},
+							{text: "Godzilla", correct:false},
+							{text: "Anaconda", correct:false}
+
+							]
+					},
+						{ 
+						question: "Saang bansa matatagpuan ang mga Canadians?",
+						answers: [ 
+							{text: "France", correct:false},
+							{text: "USA", correct:false},
+							{text: "Canadia", correct:true},
+							{text: "Philippines", correct:false}
+
+							]
+					},
+						{ 
+						question: "Kumpletuhin - Little Red _______?",
+						answers: [ 
+							{text: "and Blue", correct:false},
+							{text: "Hot Chille Peppers", correct:false},
+							{text: "Ribbon", correct:true},
+							{text: "Hot sauce", correct:false}
+
+							]
+					},
+						{ 
+						question: "Magbigay ng pagkain na dumidikit sa ngipin?",
+						answers: [ 
+							{text: "Tinga", correct:true},
+							{text: "Ice cream", correct:false},
+							{text: "Marsmallow", correct:false},
+							{text: "Pandecoco", correct:false}
+
+							]
+					},
+
+					   { 
+						question: "Kung ang H2O ay water,ano naman ang CO2?",
+						answers: [ 
+							{text: "Mineral", correct:false},
+							{text: "Wilkins", correct:false},
+							{text: "Alkaline", correct:false},
+							{text: "Cold water", correct:true}
+
+							]
+					},
+
+					{ 
+						question: "Kung ang whistle ay pito, ano naman ang whisper?",
+						answers: [ 
+							{text: "sigaw", correct:false},
+							{text: "bulong", correct:false},
+							{text: "napkin", correct:true},
+							{text: "alingawngaw", correct:false}
+
+							]
+					}
+					];
+
+
+
+				const questionElement = document.getElementById("question");
+				const answerButtons = document.getElementById("answer-buttons");
+				const nextButton = document.getElementById("next-btn");
+
+				let currentQuestionIndex = 0;
+				let score = 0;
+
+				function startQuiz(){
+
+				currentQuestionIndex = 0;
+				score = 0;
+				nextButton.innerHTML = "Next";
+				showQuestions();
+
+			}
+
+			function showQuestions(){
+				resetState();
+				let currentQuestion = questions[currentQuestionIndex];
+				let questionNo = currentQuestionIndex + 1;
+				questionElement.innerHTML = questionNo + "." + currentQuestion.question;
+
+				currentQuestion.answers.forEach(answer =>{
+				const button = document.createElement("button");
+				button.innerHTML= answer.text;
+				button.classList.add("btn");
+
+				answerButtons.appendChild(button);
+				if(answer.correct){
+					button.dataset.correct = answer.correct;
+				}
+				button.addEventListener("click",selectAnswer);
+			});
+			}
+
+			function resetState(){
+				nextButton.style.display = "none";
+				while(answerButtons.firstChild){
+					answerButtons.removeChild(answerButtons.firstChild);
+				}
+				}
+
+			function selectAnswer(e){
+					const selectedBtn = e.target;
+					const isCorrect = selectedBtn.dataset.correct == "true";
+					if(isCorrect){
+						selectedBtn.classList.add ("correct");
+						score ++;
+					}else{
+						selectedBtn.classList.add("incorrect");
+					}
+
+					Array.from(answerButtons.children).forEach(button =>{
+						if(button.dataset.correct==="true"){
+							button.classList.add("correct");
+						}
+						button.disabled = true;
+						});
+					nextButton.style.display = "block";
+				}
+			function showScore(){
+				resetState();
+				questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+				nextButton.innerHTML = "Play Again";
+				nextButton.style.display = "block";
+			}
+				function handleNextButton(){
+					currentQuestionIndex++;
+					if(currentQuestionIndex < questions.length){
+						showQuestions();
+					}else{
+						showScore();
+					}
+				}
+			nextButton.addEventListener("click",()=>{
+				if (currentQuestionIndex<questions.length){
+					handleNextButton();
+				}else{
+					startQuiz();
+				}
+			});
+			startQuiz();
+		
+
+
+			  </script> </br></br></br></br></br></br>
+						          </br>
+								     
+									
+								
+							
+
+					<strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; GularizaTech_IT &copy; <a href="https://www.facebook.com/profile.php?id=615568287222394"target="_blank">gelodacoder</a>.</strong>
+					All rights reserved 2024. 
+
+
+			</body>
+		
+
+
+
+			
+</html>
